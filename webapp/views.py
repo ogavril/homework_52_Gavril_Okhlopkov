@@ -21,3 +21,11 @@ def list_add(request):
             due_date=request.POST.get('due_date'),
         )
         return HttpResponseRedirect('/')
+
+
+def delete_list(request):
+    list_id = request.GET.get("id")
+    print(list_id)
+    for_delete = List.objects.filter(id=list_id)
+    for_delete.delete()
+    return HttpResponseRedirect('/')
