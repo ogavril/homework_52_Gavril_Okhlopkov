@@ -16,7 +16,7 @@
             <li class="list-group-item">{{ list.due_date|date:"Y-m-d" }}</li>
         </ul>
         <div class="card-footer">
-            <a href="#">Удалить</a>
+            <a href="delete/?id={{ list.id }}">Удалить</a>
         </div>
     </div>
 {% endfor %}
