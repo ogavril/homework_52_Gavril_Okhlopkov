@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Задачи{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center; margin: 40px 0;">Задачи</h1>
+        <a href="{% url 'add' %}" style="display: block; text-align: center">Создать задачу</a>
+        {% for list in lists %}
+            <div class="card" style="width: 30rem; margin-bottom: 20px; margin-left: 10px; border-color: black">
+                <ul class="list-group list-group-flush">
+                    <a href="{% url 'show' list.pk %}"><li class="list-group-item">{{ list.description }}</li></a>
+                    <li class="list-group-item">{{ list.status }}</li>
+                    <li class="list-group-item">{{ list.due_date|date:"Y-m-d" }}</li>
+                </ul>
+                <div class="card-footer">
+                    <a href="{% url 'delete' list.pk %}">Удалить</a>
+                </div>
+            </div>
+        {% endfor %}
+{% endblock %}

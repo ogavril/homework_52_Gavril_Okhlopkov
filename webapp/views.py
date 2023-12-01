@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from webapp.models import List
-from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 # Create your views here.
@@ -15,17 +15,23 @@ def list_add(request):
     if request.method == "GET":
         return render(request, 'add.html')
     elif request.method == "POST":
+        due_date_str = request.POST.get('due_date')
+        due_date = None if not due_date_str else due_date_str
         List.objects.create(
             description=request.POST.get('description'),
+            detailed_descr=request.POST.get('detailed_descr'),
             status=request.POST.get('status'),
-            due_date=request.POST.get('due_date'),
+            due_date=due_date,
         )
-        return HttpResponseRedirect('/')
+        return redirect(reverse('index'))
 
 
-def delete_list(request):
-    list_id = request.GET.get("id")
-    print(list_id)
-    for_delete = List.objects.filter(id=list_id)
+def delete_list(request, pk):
+    for_delete = get_object_or_404(List, pk=pk)
     for_delete.delete()
-    return HttpResponseRedirect('/')
+    return redirect(reverse('index'))
+
+
+def show_list(request, pk):
+    lists = get_object_or_404(List, pk=pk)
+    return render(request, 'detail.html', {'lists': lists})
