@@ -15,11 +15,13 @@ def list_add(request):
     if request.method == "GET":
         return render(request, 'add.html')
     elif request.method == "POST":
+        due_date_str = request.POST.get('due_date')
+        due_date = None if not due_date_str else due_date_str
         List.objects.create(
             description=request.POST.get('description'),
             detailed_descr=request.POST.get('detailed_descr'),
             status=request.POST.get('status'),
-            due_date=request.POST.get('due_date'),
+            due_date=due_date,
         )
         return redirect(reverse('index'))
 
