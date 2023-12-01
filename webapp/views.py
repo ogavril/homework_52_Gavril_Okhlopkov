@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from webapp.models import List
 from django.http import HttpResponseRedirect
 
@@ -24,8 +24,12 @@ def list_add(request):
         return HttpResponseRedirect('/')
 
 
-def delete_list(request):
-    list_id = request.GET.get("id")
-    for_delete = List.objects.filter(id=list_id)
+def delete_list(request, pk):
+    for_delete = get_object_or_404(List, pk=pk)
     for_delete.delete()
     return HttpResponseRedirect('/')
+
+
+def show_list(request, pk):
+    lists = get_object_or_404(List, pk=pk)
+    return render(request, 'detail.html', {'lists': lists})
