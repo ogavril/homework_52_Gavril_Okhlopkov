@@ -13,6 +13,7 @@
                     <li class="list-group-item">{{ list.due_date|date:"Y-m-d" }}</li>
                 </ul>
                 <div class="card-footer">
+                    <a href="{% url 'update' list.pk %}">Редактировать</a>
                     <a href="{% url 'delete' list.pk %}">Удалить</a>
                 </div>
             </div>

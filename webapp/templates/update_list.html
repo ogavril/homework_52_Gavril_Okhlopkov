@@ -1,24 +1,19 @@
-{% extends 'base.html' %}
-
-{% block title %}Задачи{% endblock %}
-
+{% extends "base.html" %}
+{% block title %}Обновление списка{% endblock %}
 {% block content %}
-
-    <h1 style="text-align: center; margin: 40px 0;">Создание задачи</h1>
-
+    <h1>Обновление задачи</h1>
     <div class="card">
         <div class="card-header">
             Задача
         </div>
         <div class="card-body">
-            <form method="post">
+            <form method="post" action="{% url 'update' pk=lists.pk %}">
                 {% csrf_token %}
                 {% include 'list_form.html' %}
-                <button type="submit">Добавить</button>
+                <button type="submit">Редактировать</button>
                 <br>
                 <a href="{% url 'index' %}">Вернуться к списку</a>
             </form>
         </div>
     </div>
-
 {% endblock %}

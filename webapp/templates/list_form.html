@@ -1,0 +1,20 @@
+<h5 class="card-title">
+    <label for="description">Описание:</label>
+    <input type="text" name="description" value="{{ lists.description }}" required>
+</h5>
+<p class="card-text">
+    <label for="detailed">Подробное описание:</label>
+    <textarea name="detailed_descr" rows="2" cols="40">{{ lists.detailed_descr }}</textarea>
+</p>
+<p class="card-text">
+    <label for="status">Статус:</label>
+    <select name="status" required>
+        <option value="new" {% if lists.status == 'new' %}selected{% endif %}>Новая</option>
+        <option value="in_progress" {% if lists.status == 'in_progress' %}selected{% endif %}>В процессе</option>
+        <option value="done" {% if lists.status == 'done' %}selected{% endif %}>Сделано</option>
+    </select>
+</p>
+<p class="card-text">
+    <label for="due_date">Дата выполнения:</label>
+    <input type="date" name="due_date" value="{{ lists.due_date|date:'Y-m-d' }}">
+</p>

@@ -28,10 +28,27 @@ def list_add(request):
 
 def delete_list(request, pk):
     for_delete = get_object_or_404(List, pk=pk)
-    for_delete.delete()
-    return redirect(reverse('index'))
+    if request.method == "POST":
+        for_delete.delete()
+        return redirect(reverse('index'))
+    return render(request, 'delete_list.html', {'lists': for_delete})
 
 
 def show_list(request, pk):
     lists = get_object_or_404(List, pk=pk)
     return render(request, 'detail.html', {'lists': lists})
+
+
+def update_list_view(request, pk):
+    lists = get_object_or_404(List, pk=pk)
+    if request.method == "GET":
+        return render(request, 'update_list.html', {'lists': lists})
+    if request.method == "POST":
+        due_date_str = request.POST.get('due_date')
+        due_date = None if not due_date_str else due_date_str
+        lists.status = request.POST.get('status')
+        lists.description = request.POST.get('description')
+        lists.detailed_descr = request.POST.get('detailed_descr')
+        lists.due_date = due_date
+        lists.save()
+        return redirect(reverse('index'))
