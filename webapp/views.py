@@ -28,8 +28,10 @@ def list_add(request):
 
 def delete_list(request, pk):
     for_delete = get_object_or_404(List, pk=pk)
-    for_delete.delete()
-    return redirect(reverse('index'))
+    if request.method == "POST":
+        for_delete.delete()
+        return redirect(reverse('index'))
+    return render(request, 'delete_list.html', {'lists': for_delete})
 
 
 def show_list(request, pk):
