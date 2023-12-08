@@ -13,26 +13,7 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                <h5 class="card-title">
-                    <label for="description">Описание:</label>
-                    <input type="text" name="description" required>
-                </h5>
-                <p class="card-text">
-                    <label for="detailed">Подробное описание:</label>
-                    <textarea name="detailed_descr" rows="2" cols="40"></textarea>
-                </p>
-                <p class="card-text">
-                    <label for="status">Статус:</label>
-                    <select name="status" required>
-                        <option value="new">Новая</option>
-                        <option value="in_progress">В процессе</option>
-                        <option value="done">Сделано</option>
-                    </select>
-                </p>
-                <p class="card-text">
-                    <label for="due_date">Дата выполнения:</label>
-                    <input type="date" name="due_date">
-                </p>
+                {% include 'list_form.html' %}
                 <button type="submit">Добавить</button>
                 <br>
                 <a href="{% url 'index' %}">Вернуться к списку</a>
