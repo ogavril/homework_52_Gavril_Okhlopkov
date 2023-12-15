@@ -6,10 +6,12 @@
 <h1 style="text-align: center; margin: 40px 0;">Детальный просмотр задачи</h1>
     <div class="card" style="width: 30rem; margin-bottom: 20px; margin-left: 10px; border-color: black">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ lists.description }}</li>
-            <li class="list-group-item">{{ lists.detailed_descr }}</li>
-            <li class="list-group-item">{{ lists.status }}</li>
-            <li class="list-group-item">{{ lists.due_date|date:"Y-m-d" }}</li>
+            <li class="list-group-item">Заголовок: {{ lists.summary }}</li>
+            <li class="list-group-item">Описание: {{ lists.description }}</li>
+            <li class="list-group-item">Статус: {{ lists.status.name }}</li>
+            <li class="list-group-item">Тип: {{ lists.type.name }}</li>
+            <li class="list-group-item">Время создания: {{ lists.created_at }}</li>
+            <li class="list-group-item">Время редактирования: {{ lists.updated_at }}</li>
         </ul>
         <div class="card-footer">
             <div class="card-footer">

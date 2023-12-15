@@ -6,14 +6,14 @@
 
     <h1 style="text-align: center; margin: 40px 0;">Создание задачи</h1>
 
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-header">
             Задача
         </div>
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                {% include 'list_form.html' %}
+                {% include 'partial/list_form.html' %}
                 <button type="submit">Добавить</button>
                 <br>
                 <a href="{% url 'index' %}">Вернуться к списку</a>

@@ -3,10 +3,18 @@ from django.db import models
 
 # Create your models here.
 
+class Type(models.Model):
+    name = models.CharField(max_length=100, null=False)
+
+
+class Status(models.Model):
+    name = models.CharField(max_length=100, null=False)
+
 
 class List(models.Model):
-    description = models.TextField(max_length=3000, null=False, blank=False, verbose_name="Описание")
-    detailed_descr = models.TextField(max_length=3000, null=True, blank=True, verbose_name="Подробное описание")
-    status_choices = [('new', 'Новая'), ('in_progress', 'В процессе'), ('done', 'Сделано')]
-    status = models.CharField(max_length=25, choices=status_choices, default='new', verbose_name="Статус")
-    due_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата выполнения")
+    summary = models.TextField(max_length=100, null=True, blank=False, verbose_name="Краткое описание")
+    description = models.TextField(max_length=3000, null=True, blank=True, verbose_name="Полное описание")
+    status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name="Статус", related_name="statuses")
+    type = models.ManyToManyField(Type, verbose_name="Тип", related_name="types")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Время обновления")

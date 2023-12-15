@@ -1,0 +1,6 @@
+{% csrf_token %}
+{% for form in form %}
+    <label for="{{ form.id_for_label }}">{{ form.label }}:</label><br/>
+    {{ form }}
+    <br/>
+{% endfor %}
