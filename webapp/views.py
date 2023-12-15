@@ -1,54 +1,88 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from webapp.models import List
-from django.urls import reverse
+from django.views.generic import TemplateView, View
+from webapp.forms import ListForm
 
 
 # Create your views here.
 
 
-def index_view(request):
-    lists = List.objects.all
-    return render(request, 'index.html', {'lists': lists})
+class IndexView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        lists = List.objects.all()
+        return render(request, 'index.html', {'lists': lists})
 
 
-def list_add(request):
-    if request.method == "GET":
-        return render(request, 'add.html')
-    elif request.method == "POST":
-        due_date_str = request.POST.get('due_date')
-        due_date = None if not due_date_str else due_date_str
-        List.objects.create(
-            description=request.POST.get('description'),
-            detailed_descr=request.POST.get('detailed_descr'),
-            status=request.POST.get('status'),
-            due_date=due_date,
-        )
-        return redirect(reverse('index'))
+class ListCreateView(View):
+
+    def get(self, request, *args, **kwargs):
+        form = ListForm()
+        return render(request, 'add.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = ListForm(data=request.POST)
+        if form.is_valid():
+            types = form.cleaned_data.pop('type')
+            status = form.cleaned_data.pop('status')
+            lists = List.objects.create(
+                summary=form.cleaned_data.get('summary'),
+                description=form.cleaned_data.get('description'),
+                status=status,
+                type=types,
+            )
+            lists.save()
+            return redirect('show', pk=lists.pk)
+        else:
+            return render(request, 'add.html', {'form': form})
 
 
-def delete_list(request, pk):
-    for_delete = get_object_or_404(List, pk=pk)
-    if request.method == "POST":
-        for_delete.delete()
-        return redirect(reverse('index'))
-    return render(request, 'delete_list.html', {'lists': for_delete})
+class ListDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        lists = get_object_or_404(List, pk=kwargs.get('pk'))
+        return render(request, 'delete_list.html', {'lists': lists})
+
+    def post(self, request, *args, **kwargs):
+        lists = get_object_or_404(List, pk=kwargs.get('pk'))
+        lists.delete()
+        return redirect('index')
 
 
-def show_list(request, pk):
-    lists = get_object_or_404(List, pk=pk)
-    return render(request, 'detail.html', {'lists': lists})
+class ListView(TemplateView):
+    template_name = 'detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['lists'] = get_object_or_404(List, pk=kwargs.get('pk'))
+        return context
 
 
-def update_list_view(request, pk):
-    lists = get_object_or_404(List, pk=pk)
-    if request.method == "GET":
-        return render(request, 'update_list.html', {'lists': lists})
-    if request.method == "POST":
-        due_date_str = request.POST.get('due_date')
-        due_date = None if not due_date_str else due_date_str
-        lists.status = request.POST.get('status')
-        lists.description = request.POST.get('description')
-        lists.detailed_descr = request.POST.get('detailed_descr')
-        lists.due_date = due_date
-        lists.save()
-        return redirect(reverse('index'))
+class ListUpdateView(TemplateView):
+    template_name = 'update_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lists = get_object_or_404(List, pk=kwargs.get('pk'))
+        form = ListForm(initial={
+            'summary': lists.summary,
+            'description': lists.description,
+            'status': lists.status_id,
+            'type': lists.type_id
+        })
+        context['form'] = form
+        context['lists'] = lists
+        return context
+
+    def post(self, request, *args, **kwargs):
+        lists = get_object_or_404(List, pk=kwargs.get('pk'))
+        form = ListForm(data=request.POST)
+        if form.is_valid():
+            types = form.cleaned_data.pop('type')
+            status = form.cleaned_data.pop('status')
+            lists.summary = form.cleaned_data.get('summary')
+            lists.description = form.cleaned_data.get('description')
+            lists.status = status
+            lists.type = types
+            lists.save()
+            return redirect('show', pk=lists.pk)
+        else:
+            return render(request, 'update_list.html', {'form': form})

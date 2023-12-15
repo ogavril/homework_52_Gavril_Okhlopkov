@@ -9,7 +9,7 @@
         <div class="card-body">
             <form method="post" action="{% url 'update' pk=lists.pk %}">
                 {% csrf_token %}
-                {% include 'list_form.html' %}
+                {% include 'partial/list_form.html' %}
                 <button type="submit">Редактировать</button>
                 <br>
                 <a href="{% url 'index' %}">Вернуться к списку</a>

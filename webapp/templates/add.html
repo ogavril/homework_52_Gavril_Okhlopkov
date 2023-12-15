@@ -13,7 +13,7 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                {% include 'list_form.html' %}
+                {% include 'partial/list_form.html' %}
                 <button type="submit">Добавить</button>
                 <br>
                 <a href="{% url 'index' %}">Вернуться к списку</a>
