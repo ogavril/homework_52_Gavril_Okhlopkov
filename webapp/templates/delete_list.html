@@ -2,7 +2,7 @@
 {% block title %}Удаление{% endblock %}
 {% block content %}
     <h1>Удаление задачи</h1>
-    <p>Вы уверены, что хотите удалить задачу "{{ lists.description }}"?</p>
+    <p>Вы уверены, что хотите удалить задачу "{{ lists.summary }}"?</p>
     <form method="post" action="{% url 'delete' pk=lists.pk %}">
         {% csrf_token %}
         <button type="submit">Удалить</button>
