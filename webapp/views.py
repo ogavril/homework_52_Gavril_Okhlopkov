@@ -28,8 +28,8 @@ class ListCreateView(View):
                 summary=form.cleaned_data.get('summary'),
                 description=form.cleaned_data.get('description'),
                 status=status,
-                type=types,
             )
+            lists.type.set([types])
             lists.save()
             return redirect('show', pk=lists.pk)
         else:
@@ -66,7 +66,7 @@ class ListUpdateView(TemplateView):
             'summary': lists.summary,
             'description': lists.description,
             'status': lists.status_id,
-            'type': lists.type_id
+            'type': lists.type.all()
         })
         context['form'] = form
         context['lists'] = lists
@@ -81,7 +81,7 @@ class ListUpdateView(TemplateView):
             lists.summary = form.cleaned_data.get('summary')
             lists.description = form.cleaned_data.get('description')
             lists.status = status
-            lists.type = types
+            lists.type.set([types])
             lists.save()
             return redirect('show', pk=lists.pk)
         else:
