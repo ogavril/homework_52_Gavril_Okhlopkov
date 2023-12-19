@@ -32,7 +32,7 @@ class Status(models.Model):
 
 
 class List(models.Model):
-    summary = models.TextField(max_length=100, null=False, blank=False, verbose_name="Краткое описание",
+    summary = models.CharField(max_length=100, null=False, blank=False, verbose_name="Краткое описание",
                                validators=[special_characters, bad_words])
     description = models.TextField(max_length=3000, null=True, blank=True, verbose_name="Полное описание",
                                    validators=[bad_words])
