@@ -1,0 +1,19 @@
+1)
+from webapp.models import List
+from django.utils import timezone
+import datetime
+List.objects.filter(updated_at__gte=timezone.now() - datetime.timedelta(days=30), status__name='Done')
+2)
+from django.db.models import Q
+List.objects.filter(Q(status__name__in=('Done', 'New')) & Q(type__name__in=('Task', 'Bug'))).distinct()
+3)
+List.objects.filter(Q(status__name__in=['New', 'In progress']) & (Q(summary__icontains='bug') | Q(type__name='Bug'))).distinct()
+Бонус:
+1)
+List.objects.values('id', 'summary', 'type__name', 'status__name')
+2)
+from django.db.models import F
+List.objects.filter(summary=F('description'))
+3)
+from django.db.models import Count
+List.objects.values('type__name').annotate(type_count=models.Count('id'))
