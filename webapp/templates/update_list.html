@@ -7,7 +7,7 @@
             Задача
         </div>
         <div class="card-body">
-            <form method="post" action="{% url 'update' pk=lists.pk %}">
+            <form method="post" action="">
                 {% csrf_token %}
                 {% include 'partial/list_form.html' %}
                 <button type="submit">Редактировать</button>
