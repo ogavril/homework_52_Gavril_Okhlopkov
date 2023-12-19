@@ -9,7 +9,9 @@
             <li class="list-group-item">Заголовок: {{ lists.summary }}</li>
             <li class="list-group-item">Описание: {{ lists.description }}</li>
             <li class="list-group-item">Статус: {{ lists.status.name }}</li>
-            <li class="list-group-item">Тип: {{ lists.type.name }}</li>
+            <li class="list-group-item">Тип: {% for type in lists.type.all %}
+                        {{ type.name }}{% if forloop.last %}.{% else %}, {% endif %}
+                        {% endfor %}</li>
             <li class="list-group-item">Время создания: {{ lists.created_at }}</li>
             <li class="list-group-item">Время редактирования: {{ lists.updated_at }}</li>
         </ul>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from webapp.models import List
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, FormView
 from webapp.forms import ListForm
 
 
@@ -13,27 +13,13 @@ class IndexView(TemplateView):
         return render(request, 'index.html', {'lists': lists})
 
 
-class ListCreateView(View):
+class ListCreateView(FormView):
+    template_name = 'add.html'
+    form_class = ListForm
 
-    def get(self, request, *args, **kwargs):
-        form = ListForm()
-        return render(request, 'add.html', {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = ListForm(data=request.POST)
-        if form.is_valid():
-            types = form.cleaned_data.pop('type')
-            status = form.cleaned_data.pop('status')
-            lists = List.objects.create(
-                summary=form.cleaned_data.get('summary'),
-                description=form.cleaned_data.get('description'),
-                status=status,
-            )
-            lists.type.set([types])
-            lists.save()
-            return redirect('show', pk=lists.pk)
-        else:
-            return render(request, 'add.html', {'form': form})
+    def form_valid(self, form):
+        self.list = form.save()
+        return redirect('show', pk=self.list.pk)
 
 
 class ListDeleteView(View):
@@ -56,33 +42,22 @@ class ListView(TemplateView):
         return context
 
 
-class ListUpdateView(TemplateView):
+class ListUpdateView(FormView):
     template_name = 'update_list.html'
+    form_class = ListForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lists = get_object_or_404(List, pk=kwargs.get('pk'))
-        form = ListForm(initial={
-            'summary': lists.summary,
-            'description': lists.description,
-            'status': lists.status_id,
-            'type': lists.type.all()
-        })
-        context['form'] = form
-        context['lists'] = lists
-        return context
+    def dispatch(self, request, *args, **kwargs):
+        self.lists = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        lists = get_object_or_404(List, pk=kwargs.get('pk'))
-        form = ListForm(data=request.POST)
-        if form.is_valid():
-            types = form.cleaned_data.pop('type')
-            status = form.cleaned_data.pop('status')
-            lists.summary = form.cleaned_data.get('summary')
-            lists.description = form.cleaned_data.get('description')
-            lists.status = status
-            lists.type.set([types])
-            lists.save()
-            return redirect('show', pk=lists.pk)
-        else:
-            return render(request, 'update_list.html', {'form': form})
+    def get_object(self):
+        return get_object_or_404(List, pk=self.kwargs.get('pk'))
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.lists
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('show', pk=self.lists.pk)

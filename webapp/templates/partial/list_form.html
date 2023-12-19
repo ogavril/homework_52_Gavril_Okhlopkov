@@ -3,4 +3,7 @@
     <label for="{{ form.id_for_label }}">{{ form.label }}:</label><br/>
     {{ form }}
     <br/>
+    {% for error in form.errors %}
+        <p class="text-danger">{{ error }}</p>
+    {% endfor %}
 {% endfor %}
