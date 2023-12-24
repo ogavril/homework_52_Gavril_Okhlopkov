@@ -31,6 +31,16 @@ class Status(models.Model):
         return self.name
 
 
+class Project(models.Model):
+    start = models.DateField(blank=False, null=False)
+    end = models.DateField(blank=True, null=True)
+    name = models.CharField(max_length=100, blank=False, null=False)
+    description = models.TextField(max_length=3000, blank=False, null=False)
+
+    def __str__(self):
+        return self.name
+
+
 class List(models.Model):
     summary = models.CharField(max_length=100, null=False, blank=False, verbose_name="Краткое описание",
                                validators=[special_characters, bad_words])
@@ -38,5 +48,6 @@ class List(models.Model):
                                    validators=[bad_words])
     status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name="Статус", related_name="statuses")
     type = models.ManyToManyField(Type, verbose_name="Тип", related_name="types")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks', null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Время обновления")
