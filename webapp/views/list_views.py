@@ -10,11 +10,11 @@ from webapp.forms import ListForm
 class IndexView(TemplateView):
     def get(self, request, *args, **kwargs):
         lists = List.objects.all()
-        return render(request, 'index.html', {'lists': lists})
+        return render(request, 'lists/index.html', {'lists': lists})
 
 
 class ListCreateView(FormView):
-    template_name = 'add.html'
+    template_name = 'lists/add_list.html'
     form_class = ListForm
 
     def form_valid(self, form):
@@ -25,7 +25,7 @@ class ListCreateView(FormView):
 class ListDeleteView(View):
     def get(self, request, *args, **kwargs):
         lists = get_object_or_404(List, pk=kwargs.get('pk'))
-        return render(request, 'delete_list.html', {'lists': lists})
+        return render(request, 'lists/delete_list.html', {'lists': lists})
 
     def post(self, request, *args, **kwargs):
         lists = get_object_or_404(List, pk=kwargs.get('pk'))
@@ -34,7 +34,7 @@ class ListDeleteView(View):
 
 
 class ListView(TemplateView):
-    template_name = 'detail.html'
+    template_name = 'lists/detail_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +43,7 @@ class ListView(TemplateView):
 
 
 class ListUpdateView(FormView):
-    template_name = 'update_list.html'
+    template_name = 'lists/update_list.html'
     form_class = ListForm
 
     def dispatch(self, request, *args, **kwargs):

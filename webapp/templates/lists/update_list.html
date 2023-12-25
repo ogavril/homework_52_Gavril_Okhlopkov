@@ -6,13 +6,13 @@
         <div class="card-header">
             Задача
         </div>
-        <div class="card-body">
+        <div class="card-body mb-4">
             <form method="post" action="">
                 {% csrf_token %}
                 {% include 'partial/list_form.html' %}
                 <button type="submit">Редактировать</button>
                 <br>
-                <a href="{% url 'index' %}">Вернуться к списку</a>
+                <a href="{% url 'projects' %}">Вернуться к списку</a>
             </form>
         </div>
     </div>

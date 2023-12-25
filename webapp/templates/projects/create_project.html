@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% if form.instance.id %}Редактирование проекта{% else %}Создание проекта{% endif %}</h1>
+    <form method="post" action="{% url 'create_project' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form.instance.id %}Сохранить изменения{% else %}Создать проект{% endif %}</button>
+    </form>
+{% endblock %}

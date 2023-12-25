@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ project.name }}</h1>
+    <h4 style="margin-top: 20px">Описание:</h4>
+    <p><b>{{ project.description }}</b></p>
+    <p><b>Дата начала: {{ project.start }}</b></p>
+    <p><b>Дата конца: {{ project.end }}</b></p>
+    
+    <h1 style="margin: 40px 0;">Задачи</h1>
+        {% if lists %}
+        {% for list in lists %}
+            <div class="card" style="width: 30rem; margin-bottom: 20px; margin-left: 10px; border-color: black">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Заголовок: {{ list.summary }}</li>
+                    <li class="list-group-item">Статус: {{ list.status.name }}</li>
+                    <li class="list-group-item">Тип: {% for type in list.type.all %}
+                        {{ type.name }}{% if forloop.last %}.{% else %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                </ul>
+                <div class="card-footer">
+                    <a href="{% url 'show' list.pk %}">Подробнее...</a>
+                    <a href="{% url 'update' list.pk %}">Редактировать</a>
+                    <a href="{% url 'delete' list.pk %}">Удалить</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Задачи отсутствуют</p>
+    {% endif %}
+{% endblock %}

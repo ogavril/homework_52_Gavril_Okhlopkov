@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Список проектов</h1>
+    <div>
+        {% include 'partial/search.html' %}
+    </div>
+    {% if is_paginated %}
+    	{% include 'partial/pagination.html' %}
+    {% endif %} 
+    {% if projects %}
+        <ul>
+            {% for project in projects %}
+                <div class="card mt-4" style="width: 80rem;">
+                    <ul class="list-group list-group-flush">
+                        <a href="{% url 'project' project.pk %}"><li class="list-group-item">{{ project.name }}</li></a>
+                        <li class="list-group-item">{{ project.description }}</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="{% url 'project_update' project.pk %}">Редактировать</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Проекты не найдены.</p>
+    {% endif %}
+    {% endblock %}
