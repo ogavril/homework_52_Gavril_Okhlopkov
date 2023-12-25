@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление{% endblock %}
+{% block menu %}<a class="nav-link" aria-current="page"  href="{% url 'projects' %}">На главную</a>{% endblock %}
+
+{% block content %}
+<h1>Удаление проекта</h1>
+
+    <h3>Вы уверены, что хотите удалить статью "{{ project.name }}"?</h3>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="ДА"/>
+</form>
+    <a href="{% url 'project' pk=project.pk %}">Нет</a>
+
+{% endblock %}

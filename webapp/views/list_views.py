@@ -7,10 +7,10 @@ from webapp.forms import ListForm
 # Create your views here.
 
 
-class IndexView(TemplateView):
-    def get(self, request, *args, **kwargs):
-        lists = List.objects.all()
-        return render(request, 'lists/index.html', {'lists': lists})
+# class IndexView(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         lists = List.objects.all()
+#         return render(request, 'lists/index.html', {'lists': lists})
 
 
 class ListCreateView(FormView):
@@ -30,7 +30,7 @@ class ListDeleteView(View):
     def post(self, request, *args, **kwargs):
         lists = get_object_or_404(List, pk=kwargs.get('pk'))
         lists.delete()
-        return redirect('index')
+        return redirect('project', lists.project.pk)
 
 
 class ListView(TemplateView):

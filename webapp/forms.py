@@ -12,6 +12,7 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['name', 'description', 'start', 'end']
+        labels = {'name': 'Название', 'description': 'Описание', 'start': 'Дата начала', 'end': 'Дата конца'}
 
 
 class SimpleSearchForm(forms.Form):

@@ -12,11 +12,13 @@
             {% for project in projects %}
                 <div class="card mt-4" style="width: 80rem;">
                     <ul class="list-group list-group-flush">
-                        <a href="{% url 'project' project.pk %}"><li class="list-group-item">{{ project.name }}</li></a>
+                        <li class="list-group-item">{{ project.name }}</li>
                         <li class="list-group-item">{{ project.description }}</li>
                     </ul>
                     <div class="card-footer">
+                        <a href="{% url 'project' project.pk %}">Подробнее...</a>
                         <a href="{% url 'project_update' project.pk %}">Редактировать</a>
+                        <a href="{% url 'project_delete' project.pk %}">Удалить</a>
                     </div>
                 </div>
             {% endfor %}
