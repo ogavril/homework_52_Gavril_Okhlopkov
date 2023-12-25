@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from webapp.models import List
+from webapp.models import List, Project
 from django.views.generic import TemplateView, View, FormView
 from webapp.forms import ListForm
 
@@ -18,8 +18,11 @@ class ListCreateView(FormView):
     form_class = ListForm
 
     def form_valid(self, form):
+        project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
+        list = form.save(commit=False)
+        list.project = project
         self.list = form.save()
-        return redirect('show', pk=self.list.pk)
+        return redirect('project', project.pk)
 
 
 class ListDeleteView(View):

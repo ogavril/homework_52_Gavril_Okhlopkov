@@ -5,7 +5,7 @@ from webapp.models import List, Project
 class ListForm(forms.ModelForm):
     class Meta:
         model = List
-        fields = ['summary', 'description', 'status', 'type', 'project']
+        fields = ['summary', 'description', 'status', 'type']
 
 
 class ProjectForm(forms.ModelForm):
