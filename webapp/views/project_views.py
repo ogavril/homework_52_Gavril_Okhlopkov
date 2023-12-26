@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import Http404
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -73,3 +74,10 @@ class ProjectDeleteView(DeleteView):
     template_name = 'projects/delete_project.html'
     model = Project
     success_url = reverse_lazy('projects')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_deleted:
+            self.object.is_deleted = True
+            self.object.save()
+            return super().delete(request, *args, **kwargs)
