@@ -7,5 +7,5 @@
         {% csrf_token %}
         <button type="submit">Удалить</button>
     </form>
-    <a href="{% url 'index' %}">Отмена</a>
+    <a href="{% url 'project' lists.project.pk %}">Отмена</a>
 {% endblock %}
