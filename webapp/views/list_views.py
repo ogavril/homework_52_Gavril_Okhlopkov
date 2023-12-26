@@ -1,19 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+
 from webapp.models import List, Project
-from django.views.generic import TemplateView, View, FormView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from webapp.forms import ListForm
 
 
-# Create your views here.
-
-
-# class IndexView(TemplateView):
-#     def get(self, request, *args, **kwargs):
-#         lists = List.objects.all()
-#         return render(request, 'lists/index.html', {'lists': lists})
-
-
-class ListCreateView(FormView):
+class ListCreateView(CreateView):
     template_name = 'lists/add_list.html'
     form_class = ListForm
 
@@ -25,42 +18,26 @@ class ListCreateView(FormView):
         return redirect('project', project.pk)
 
 
-class ListDeleteView(View):
+class ListDeleteView(DeleteView):
+    model = List
+
     def get(self, request, *args, **kwargs):
-        lists = get_object_or_404(List, pk=kwargs.get('pk'))
-        return render(request, 'lists/delete_list.html', {'lists': lists})
+        return self.delete(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        lists = get_object_or_404(List, pk=kwargs.get('pk'))
-        lists.delete()
-        return redirect('project', lists.project.pk)
+    def get_success_url(self):
+        return reverse('project', kwargs={'pk': self.object.project.pk})
 
 
-class ListView(TemplateView):
+class ListView(DetailView):
+    model = List
     template_name = 'lists/detail_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['lists'] = get_object_or_404(List, pk=kwargs.get('pk'))
-        return context
+    context_object_name = 'lists'
 
 
-class ListUpdateView(FormView):
+class ListUpdateView(UpdateView):
+    model = List
     template_name = 'lists/update_list.html'
     form_class = ListForm
 
-    def dispatch(self, request, *args, **kwargs):
-        self.lists = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_object(self):
-        return get_object_or_404(List, pk=self.kwargs.get('pk'))
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.lists
-        return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        return redirect('show', pk=self.lists.pk)
+    def get_success_url(self):
+        return reverse('project', kwargs={'pk': self.object.project.pk})

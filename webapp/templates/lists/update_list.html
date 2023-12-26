@@ -12,7 +12,7 @@
                 {% include 'partial/list_form.html' %}
                 <button type="submit">Редактировать</button>
                 <br>
-                <a href="{% url 'projects' %}">Вернуться к списку</a>
+                <a href="{% url 'project' object.project.pk %}">Назад</a>
             </form>
         </div>
     </div>
