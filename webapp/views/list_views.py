@@ -1,12 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-
 from webapp.models import List, Project
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from webapp.forms import ListForm
 
 
-class ListCreateView(CreateView):
+class ListCreateView(LoginRequiredMixin, CreateView):
     template_name = 'lists/add_list.html'
     form_class = ListForm
 
@@ -18,7 +18,7 @@ class ListCreateView(CreateView):
         return redirect('project', project.pk)
 
 
-class ListDeleteView(DeleteView):
+class ListDeleteView(LoginRequiredMixin, DeleteView):
     model = List
 
     def get(self, request, *args, **kwargs):
@@ -34,7 +34,7 @@ class ListView(DetailView):
     context_object_name = 'lists'
 
 
-class ListUpdateView(UpdateView):
+class ListUpdateView(LoginRequiredMixin, UpdateView):
     model = List
     template_name = 'lists/update_list.html'
     form_class = ListForm

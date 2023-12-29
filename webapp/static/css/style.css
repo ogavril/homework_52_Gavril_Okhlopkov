@@ -1,0 +1,40 @@
+.pagination {
+    text-align: center;
+}
+
+.pagination a, .pagination .page-disabled {
+    display: inline-block;
+    border: solid 1px #0d6efd;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 3px;
+}
+
+.pagination a {
+    background: #0d6efd;
+    color: white;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    background: #0d6efd;
+    text-decoration: underline;
+}
+
+.pagination .page-disabled {
+    background: #0d6efd;
+    color: #dddddd
+}
+
+.pagination .current-page {
+    display: inline-block;
+}
+
+.pagination .current-page input {
+    width: 50px;
+    padding: 5px 7px;
+    font-size: inherit;
+    border-radius: 5px;
+    text-align: center;
+    border: solid 1px gray;
+}

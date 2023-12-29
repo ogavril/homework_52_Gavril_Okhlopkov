@@ -8,7 +8,9 @@
     <p><b>Дата конца: {{ project.end }}</b></p>
     
     <h1 style="margin: 20px 0;">Задачи</h1>
-    <a href="{% url 'add' project.pk %}">Создать задачу</a>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'add' project.pk %}">Создать задачу</a>
+    {% endif %}
         {% if lists %}
         {% for list in lists %}
             <div class="card" style="width: 30rem; margin: 20px 0; border-color: black">
@@ -22,8 +24,10 @@
                 </ul>
                 <div class="card-footer">
                     <a href="{% url 'show' list.pk %}">Подробнее...</a>
-                    <a href="{% url 'update' list.pk %}">Редактировать</a>
-                    <a href="{% url 'delete' list.pk %}">Удалить</a>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'update' list.pk %}">Редактировать</a>
+                        <a href="{% url 'delete' list.pk %}">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
