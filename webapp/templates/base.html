@@ -17,9 +17,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'projects' %}">Главная</a>
                 </li>
+                {% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create_project' %}">Создать проект</a>
                 </li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    {% block menu_links %}{% endblock %}
+                    <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">Выход</a></li>
+                {% else %}
+                    <li class="nav-item"><a href="{% url 'accounts:login' %}" class="nav-link">Вход</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
